@@ -38,13 +38,3 @@ C:\Users\mariu\OneDrive\Desktop\Chat Room\ChatRoomClient\ChatRoomClient\obj\Debu
 C:\Users\mariu\OneDrive\Desktop\Chat Room\ChatRoomClient\ChatRoomClient\obj\Debug\ChatRoomClient.csproj.CoreCompileInputs.cache
 C:\Users\mariu\OneDrive\Desktop\Chat Room\ChatRoomClient\ChatRoomClient\obj\Debug\ChatRoomClient.exe
 C:\Users\mariu\OneDrive\Desktop\Chat Room\ChatRoomClient\ChatRoomClient\obj\Debug\ChatRoomClient.pdb
-C:\Users\mariu\OneDrive\Desktop\PROGRAMMING DUMP\Chat Room\ChatRoomClient\ChatRoomClient\bin\Debug\ChatRoomClient.exe.config
-C:\Users\mariu\OneDrive\Desktop\PROGRAMMING DUMP\Chat Room\ChatRoomClient\ChatRoomClient\bin\Debug\ChatRoomClient.exe
-C:\Users\mariu\OneDrive\Desktop\PROGRAMMING DUMP\Chat Room\ChatRoomClient\ChatRoomClient\bin\Debug\ChatRoomClient.pdb
-C:\Users\mariu\OneDrive\Desktop\PROGRAMMING DUMP\Chat Room\ChatRoomClient\ChatRoomClient\obj\Debug\ChatRoomClient.csprojAssemblyReference.cache
-C:\Users\mariu\OneDrive\Desktop\PROGRAMMING DUMP\Chat Room\ChatRoomClient\ChatRoomClient\obj\Debug\ChatRoomClient.Form1.resources
-C:\Users\mariu\OneDrive\Desktop\PROGRAMMING DUMP\Chat Room\ChatRoomClient\ChatRoomClient\obj\Debug\ChatRoomClient.Properties.Resources.resources
-C:\Users\mariu\OneDrive\Desktop\PROGRAMMING DUMP\Chat Room\ChatRoomClient\ChatRoomClient\obj\Debug\ChatRoomClient.csproj.GenerateResource.cache
-C:\Users\mariu\OneDrive\Desktop\PROGRAMMING DUMP\Chat Room\ChatRoomClient\ChatRoomClient\obj\Debug\ChatRoomClient.csproj.CoreCompileInputs.cache
-C:\Users\mariu\OneDrive\Desktop\PROGRAMMING DUMP\Chat Room\ChatRoomClient\ChatRoomClient\obj\Debug\ChatRoomClient.exe
-C:\Users\mariu\OneDrive\Desktop\PROGRAMMING DUMP\Chat Room\ChatRoomClient\ChatRoomClient\obj\Debug\ChatRoomClient.pdb

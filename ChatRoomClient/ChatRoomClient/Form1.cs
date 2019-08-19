@@ -1,66 +1,147 @@
 ﻿using System;
-using System.Windows.Forms;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using System.Net;
 using System.Net.Sockets;
-using System.Threading;
 
 namespace ChatRoomClient
 {
     public partial class Form1 : Form
     {
-        System.Net.Sockets.TcpClient clientSocket = new System.Net.Sockets.TcpClient();
-        NetworkStream serverStream = default(NetworkStream);
-        string readData = null;
+        Socket socket;
+        byte[] buffer = new byte[256];
 
         public Form1()
         {
             InitializeComponent();
-        }
+            CheckForIllegalCrossThreadCalls = false;
+            DisplayTextBox.ScrollBars = ScrollBars.Vertical;
 
-        private void SendButton_Click(object sender, EventArgs e)
-        {
-            byte[] outStream = System.Text.Encoding.ASCII.GetBytes(DisplayTextBox.Text + "$");
-            serverStream.Write(outStream, 0, outStream.Length);
-            serverStream.Flush();
         }
 
         private void StartButton_Click(object sender, EventArgs e)
         {
-            readData = "Conected to Chat Server ...";
-            msg();
-            clientSocket.Connect("127.0.0.1", 8888);
-            serverStream = clientSocket.GetStream();
+            string ipaddress = IpaddressTextBox.Text;
+            int port = int.Parse(PortTextBox.Text);
 
-            byte[] outStream = System.Text.Encoding.ASCII.GetBytes(MessageTextBox.Text + "$");
-            serverStream.Write(outStream, 0, outStream.Length);
-            serverStream.Flush();
-
-            Thread ctThread = new Thread(getMessage);
-            ctThread.Start();
+            Connect(ipaddress, port);
         }
 
-        private void getMessage()
+        private void Connect(string ipaddress, int port)
         {
-            while (true)
+            try
             {
-                serverStream = clientSocket.GetStream();
-                int buffSize = 0;
-                byte[] inStream = new byte[10025];
-                buffSize = clientSocket.ReceiveBufferSize;
-                serverStream.Read(inStream, 0, buffSize);
-                string returndata = System.Text.Encoding.ASCII.GetString(inStream);
-                readData = "" + returndata;
-                msg();
+                // Try to make a socket connection
+                socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+                socket.BeginConnect(ipaddress, port, ConnectHandler, socket);
+            }
+            catch (Exception ex)
+            {
+                DisplayTextBox.AppendText("Socket Connection error:\n" + ex.ToString());
             }
         }
 
-        private void msg()
+        private void ConnectHandler(IAsyncResult info)
         {
-            if (this.InvokeRequired)
-                this.Invoke(new MethodInvoker(msg));
-            else
-                MessageTextBox.Text = MessageTextBox.Text + Environment.NewLine + " >> " + readData;
+            //Which socket is this using?
+            Socket s = (Socket)info.AsyncState;
+
+            //Complete The Connection
+            try
+            {
+                s.EndConnect(info);
+                DisplayTextBox.AppendText("Connected to a server" + Environment.NewLine);
+            }
+            catch (Exception ex)
+            {
+                DisplayTextBox.AppendText("Could not Connect to the server as it is refusing any connection" + Environment.NewLine);
+            }
+
+            // Set up an event handler for receiving messages on socket s
+            Receive(s);
+            
         }
+
+        private void SendButton_Click(object sender, EventArgs e)
+        {
+            Transmit(socket, MessageTextBox.Text);
+        }
+
+        private void Transmit(Socket s, string text)
+        {
+            try
+            {
+                string nickname = NameBox.Text;
+                //Prepare Message
+                byte[] messageBytes = Encoding.ASCII.GetBytes(nickname + ": " + text);
+
+                // Send it
+                s.BeginSend(messageBytes, 0, messageBytes.Length, 0,
+                new AsyncCallback(TransmitHandler), s);
+            }
+            catch (Exception ex)
+            { }
+        }
+
+        private void TransmitHandler(IAsyncResult info)
+        {
+            try
+            {
+                // Which socket is this using?
+                Socket s = (Socket)info.AsyncState;
+
+                int bytesSent = s.EndSend(info);
+            }
+            catch (Exception ex)
+            { }
+        }
+
+        private void Receive(Socket s)
+        {
+            try
+            {
+                s.BeginReceive(buffer, 0, buffer.Length, SocketFlags.None,
+                     ReceiveHandler, s);
+            }
+            catch (Exception ex)
+            { } // Do nothing if there's an exception
+        }
+
+        private void ReceiveHandler(IAsyncResult info)
+        {
+
+            try
+            {
+
+                // Which socket is this using?
+                Socket s = (Socket)info.AsyncState;
+
+                // Read Message
+                int numBytesReceived = s.EndReceive(info);
+                string message = Encoding.ASCII.GetString(buffer, 0, numBytesReceived);
+
+                //Update Display
+                DisplayTextBox.AppendText(message);
+
+                //Reset The event Handler for new incoming messages on socket s
+                Receive(s);
+            }
+            catch (Exception ex)
+            { }
+        }
+
+
+        private void StopButton_Click(object sender, EventArgs e)
+        {
+            socket.Close();
+        }
+
 
     }
 }

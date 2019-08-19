@@ -84,7 +84,7 @@
             this.StopButton.TabIndex = 11;
             this.StopButton.Text = "Disconnect";
             this.StopButton.UseVisualStyleBackColor = true;
-            //            this.StopButton.Click += new System.EventHandler(this.StopButton_Click);
+            this.StopButton.Click += new System.EventHandler(this.StopButton_Click);
             // 
             // IpaddressTextBox
             // 
